@@ -15,6 +15,8 @@ services:
     build: ./flask_auth
     expose:
       - "5000"
+    environment:
+      - SECRET_OTP=NVXWIZ3FNFTGS4DBORQXE3DFNRZWKZJA
 
   app1:
     build: ./demo_app

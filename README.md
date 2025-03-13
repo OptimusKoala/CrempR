@@ -44,8 +44,8 @@ poc-docker-auth/
 1\. Clonez le projet et positionnez-vous dans le dossier racine :
 
 ```bash
-git clone [URL_DU_REPO]
-cd poc-docker-auth
+git clone git@github.com:OptimusKoala/CrempR.git
+cd CrempR
 ```
 
 2\. Construisez et lancez les conteneurs Docker :
@@ -57,15 +57,15 @@ docker-compose up --build
 3\. Modifiez votre fichier `/etc/hosts` pour tester localement :
 
 ```bash
-127.0.0.1 auth.client.com app1.client.com app2.client.com
+127.0.0.1 auth.crempr.fr app1.crempr.fr app2.crempr.fr
 ```
 
 ---
 
 ## 🔑 Tester le POC
 
-- Rendez-vous sur `http://app1.client.com` ou `http://app2.client.com`.
-- Vous serez automatiquement redirigé vers la page de connexion sécurisée `http://auth.client.com`.
+- Rendez-vous sur `http://app1.crempr.fr` ou `http://app2.crempr.fr`.
+- Vous serez automatiquement redirigé vers la page de connexion sécurisée `http://auth.crempr.fr`.
 - Identifiants de test :
   - **Username :** `demo`
   - Le QR code affiché sur la page permet d'obtenir l'OTP via l'application Google Authenticator.
