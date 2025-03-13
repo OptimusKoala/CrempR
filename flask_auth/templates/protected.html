@@ -6,7 +6,13 @@
 <body>
 <h1>Vous êtes connecté à CrempR !</h1>
 <a href="/logout">Déconnexion</a>
-<br>
+<br><br>
+{% if admin %}
+    <p>Vous êtes admin !</p>
+{% else %}
+    <p>Utilisateur standard.</p>
+{% endif %}
+<br><br>
 <h2>Applications :</h2>
 <ul>
   <li>Application 1 -> <a href="http://app1.crempr.fr">clique ici !</a></li>

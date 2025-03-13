@@ -1,3 +1,5 @@
+#NVXWIZ3FNFTGS4DBORQXE3DFNRZWKZJA
+
 version: '3'
 
 services:
@@ -10,24 +12,55 @@ services:
       - flask_auth
       - app1
       - app2
+      - mariadb
+      - phpmyadmin
 
   flask_auth:
     build: ./flask_auth
     expose:
       - "5000"
     environment:
-      - SECRET_OTP=NVXWIZ3FNFTGS4DBORQXE3DFNRZWKZJA
+      SECRET_OTP: "NVXWIZ3FNFTGS4DBORQXE3DFNRZWKZJA"
+      DB_HOST: mariadb
+      DB_USER: dbadmin
+      DB_PASS: crempr
+      DB_NAME: cremprdb
+    depends_on:
+      - mariadb
 
   app1:
     build: ./demo_app
     expose:
       - "80"
     environment:
-      - APP_NAME=Application 1
+      APP_NAME: Application 1
 
   app2:
     build: ./demo_app
     expose:
       - "80"
     environment:
-      - APP_NAME=Application 2
+      APP_NAME: Application 2
+
+  mariadb:
+    image: mariadb:11.3
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./mariadb/init:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cremprdb
+      MYSQL_USER: dbadmin
+      MYSQL_PASSWORD: crempr
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: dbadmin
+      PMA_PASSWORD: crempr
+
+volumes:
+  dbdata:
