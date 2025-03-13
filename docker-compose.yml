@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - flask_auth
+      - app1
+      - app2
+
+  flask_auth:
+    build: ./flask_auth
+    expose:
+      - "5000"
+
+  app1:
+    build: ./demo_app
+    expose:
+      - "80"
+    environment:
+      - APP_NAME=Application 1
+
+  app2:
+    build: ./demo_app
+    expose:
+      - "80"
+    environment:
+      - APP_NAME=Application 2
