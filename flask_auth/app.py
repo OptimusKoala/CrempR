@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-import pyotp, qrcode, io, base64, os, time
+import pyotp, qrcode, io, base64, os, time, bcrypt
 from sqlalchemy.exc import OperationalError
 
 app = Flask(__name__)
@@ -43,11 +43,11 @@ def login():
 
     if request.method == 'POST':
         username = request.form.get('username')
-        password = request.form.get('password')
+        password = request.form.get('password').encode('utf-8')  # Important : encoder en bytes
         otp = request.form.get('otp')
 
         user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
+        if user and bcrypt.checkpw(password, user.password.encode('utf-8')):  # Vérification bcrypt
             if totp.verify(otp):
                 login_user(user)
                 return redirect(url_for('protected'))
