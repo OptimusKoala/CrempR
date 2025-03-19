@@ -70,6 +70,8 @@ def protected():
     is_admin = current_user.role == 'admin'
     return render_template('protected.html', admin=is_admin, username=current_user.username)
 
+import bcrypt
+
 @app.route('/inscription', methods=['GET', 'POST'])
 def inscription():
     error = None
@@ -77,14 +79,18 @@ def inscription():
         username = request.form['username']
         password = request.form['password']
         role = request.form.get('role', 'user')
+
         if User.query.filter_by(username=username).first():
             error = "Utilisateur existe déjà."
         else:
-            hashed_pwd = generate_password_hash(password)
+            # Hachage du mot de passe avec bcrypt
+            hashed_pwd = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            
             user = User(username=username, password=hashed_pwd, role=role)
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('login'))
+            
     return render_template('inscription.html', error=error)
 
 @app.route('/check-auth')
